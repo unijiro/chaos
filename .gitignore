@@ -15,9 +15,6 @@ env/
 *.hdf5
 
 # Output images (generated files)
-*.png
-*.jpg
-*.jpeg
 *.gif
 *.svg
 *.pdf
