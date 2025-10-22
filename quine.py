@@ -1,0 +1,1 @@
+a="print(f'a={repr(a)};exec(a)')";exec(a)

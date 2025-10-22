@@ -9,9 +9,10 @@ import matplotlib.pyplot as plt
 import time
 
 DELTA_T: float = 0.1  # Time step in ms
+V_TH:int = 30  # Spike threshold in mV
 
 class IzhikevichNeuron:
-    def __init__(self, a=0.2, b=2, c=-56, d=-16):
+    def __init__(self, a=0.2, b=2, c=-56, d=-13):
         self.a = a
         self.b = b
         self.c = c
@@ -23,7 +24,7 @@ class IzhikevichNeuron:
 
     def step(self, I, dt=DELTA_T):
         for _ in range(1):
-            if self.v >= 30:
+            if self.v >= V_TH:
                 self.v = self.c
                 self.u += self.d
             self.dv = (0.04 * self.v ** 2 + 5 * self.v + 140 - self.u + I) * dt
@@ -67,6 +68,7 @@ def plot_uv(u_trace, v_trace, dt=DELTA_T):
     # plt.show()
 
 # The def. of Nullclines is where dv/dt = 0 and du/dt = 0.
+'''
 def plot_nullclines_and_vectors(neuron, I, v_range=(-80, 60), u_range=(-125, -80), dt=DELTA_T):
     v = np.linspace(v_range[0], v_range[1], 400)
     u = np.linspace(u_range[0], u_range[1], 400)
@@ -95,6 +97,16 @@ def plot_nullclines_and_vectors(neuron, I, v_range=(-80, 60), u_range=(-125, -80
     plt.savefig('izhikevich_nullclines.png', dpi=150, bbox_inches='tight')  # 保存
     print("Plot saved as 'izhikevich_nullclines.png'")
     # plt.show()
+'''
+
+def ISIs(v_trace, dt=DELTA_T):
+    spike_times = np.where(v_trace >= V_TH)[0] * dt
+    ISI = np.diff(spike_times)
+    # Save ISI to a csv file
+    np.savetxt('izhikevich_ISI.csv', ISI, delimiter=',')
+    print("ISI saved as 'izhikevich_ISI.csv'")
+    return ISI
+
 
 if __name__ == "__main__":
     neuron = IzhikevichNeuron()
@@ -109,6 +121,8 @@ if __name__ == "__main__":
     print(f"Simulation completed in {end_time - start_time:.4f} seconds.")
     plot_results(v_trace, dt)
     plot_uv(u_trace, v_trace, dt)
-    plot_nullclines_and_vectors(neuron, I)
+    # plot_nullclines_and_vectors(neuron, I)
     print(v_trace)
     print(u_trace)
+    ISI = ISIs(v_trace, dt)
+    print("Inter-Spike Intervals (ISI):", ISI)
