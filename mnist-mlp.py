@@ -4,6 +4,7 @@ import numpy as np
 import keras
 from keras import layers
 from keras.datasets import mnist
+import matplotlib.pyplot as plt
 
 import SNN
 
@@ -11,7 +12,7 @@ def run_snn(X_train, y_train_oh, X_test, y_test_oh):
     # 電流を毎ステップ一定にしたい場合は encoding="constant"
     snn = SNN.SNN(
         inputnodes=28*28,
-        hiddennodes=512,     # 容量アップで精度改善
+        hiddennodes=256,     # 容量アップで精度改善
         outputnodes=10,
         learningrate=0.1,    # readout の学習率
         weight_decay=1e-4,   # 軽いL2正則化
