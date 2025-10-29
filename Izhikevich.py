@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import time
 
-DELTA_T: float = 0.1  # Time step in ms
+DELTA_T: float = 0.01  # Time step in ms
 V_TH:int = 30  # Spike threshold in mV
 
 class IzhikevichNeuron:
